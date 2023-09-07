@@ -1,0 +1,53 @@
+rule vt_relationships_file_downloaded_from_url {
+  
+  meta:
+    author = "Chronicle Security"
+    description = "Alert on downloading a known file hash from a known IP with VT Relationships."
+    severity = "Critical"
+    priority = "Critical"
+
+  events:
+    // NETWORK_HTTP
+    $http.metadata.event_type = "NETWORK_HTTP"
+    $http.principal.user.userid = $userid
+    $http.target.url = $url
+
+    // FILE_CREATION
+    $file.metadata.event_type = "FILE_CREATION"
+    $file.target.user.userid = $userid
+    $file.target.file.sha256 = $file_hash
+    $vtUrl = strings.concat("https://www.virustotal.com/gui/file/", $file.target.file.sha256)
+
+    // First NETWORK_HTTP later FILE_CREATION
+    $http.metadata.event_timestamp.seconds < $file.metadata.event_timestamp.seconds
+
+    // VT Relationships
+    $vt.graph.metadata.entity_type = "FILE"
+    $vt.graph.metadata.source_type = "GLOBAL_CONTEXT"
+    $vt.graph.metadata.vendor_name = "VirusTotal"
+    $vt.graph.metadata.product_name = "VirusTotal Relationships"
+    $vt.graph.entity.file.sha256 = $file_hash
+
+    // Downloaded From
+    $vt.graph.relations.entity_type = "URL"
+    $vt.graph.relations.relationship = "DOWNLOADED_FROM"
+    $vt.graph.relations.entity.url = $url
+
+  match:
+    $userid over 1m
+
+  outcome:
+    $target_url = array_distinct($url)
+    $target_userid = array_distinct($userid)
+    $target_hash = array_distinct($file_hash)
+    $target_file_path = array_distinct($file.target.file.full_path)
+    $principalHostname = array_distinct($http.principal.hostname)
+    $principalIp = array_distinct($http.principal.ip)
+    $principalMac = array_distinct($http.principal.mac)
+    $targetHostname = array_distinct($http.target.hostname)
+    $targetIp = array_distinct($http.target.ip)
+    $vt_url = array_distinct($vtUrl)
+
+  condition:
+    $http and $file and $vt
+}

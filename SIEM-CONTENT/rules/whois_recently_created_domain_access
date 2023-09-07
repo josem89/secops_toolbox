@@ -1,0 +1,30 @@
+rule whois_recently_created_domain_access {
+ meta:
+    author = "Chronicle Security"
+    description = "Detects access attempts to a newly created domain via WHOIS enrichment."
+    severity = "Info"
+    priority = "Info"
+
+  events:
+    ($access.metadata.event_type = "NETWORK_HTTP" or $access.metadata.event_type = "NETWORK_CONNECTION")
+
+    // join access event to entity graph to use WHOIS data
+    $access.target.hostname = $domain
+    
+    // use WHOIS data to look for expired domains
+    $whois.graph.entity.domain.name = $domain
+    $whois.graph.metadata.entity_type = "DOMAIN_NAME"
+    $whois.graph.metadata.vendor_name = "WHOIS"
+    $whois.graph.metadata.product_name = "WHOISXMLAPI Simple Whois"
+    $whois.graph.metadata.source_type = "GLOBAL_CONTEXT"
+    $whois.graph.entity.domain.creation_time.seconds > 0
+
+    // domain was created in the last 30 days
+    2592000 > timestamp.current_seconds() - $whois.graph.entity.domain.creation_time.seconds
+
+  match:
+    $domain over 1h
+
+  condition:
+    $access and $whois
+}
