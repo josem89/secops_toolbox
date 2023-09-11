@@ -1,0 +1,21 @@
+rule suspicious_unusual_location_lnk_file
+{
+meta:
+    author = "Chronicle Security"
+    severity = "Low"
+    priority = "Low"
+   
+events:
+  (
+    $event.metadata.event_type = "FILE_CREATION" or
+    $event.metadata.event_type = "FILE_MODIFICATION" or
+    $event.metadata.event_type = "FILE_COPY" or
+    $event.metadata.event_type = "FILE_MOVE"
+  )
+  and
+  $event.target.file.full_path = /\.lnk$/ nocase and
+  $event.target.file.full_path = /\\(Desktop|Documents|Start Menu)\\.*/ nocase
+  
+condition:
+  $event
+}

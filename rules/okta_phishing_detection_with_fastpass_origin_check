@@ -1,0 +1,38 @@
+rule okta_phishing_detection_with_fastpass_origin_check {
+
+  meta:
+    author = "Chronicle Security"
+    description = "Okta provides a platform detection for when a user enrolled in FastPass fails to authenticate via a real-time AiTM phishing proxy."
+    mitre_attack_tactic = "Initial Access"
+    mitre_attack_technique = "Phishing"
+    mitre_attack_url = "https://attack.mitre.org/techniques/T1566/"
+    mitre_attack_version = "v2.2"
+    severity = "Medium"
+    priority = "Medium"
+
+  events:
+    $login.metadata.product_name = "Okta"
+    $login.metadata.vendor_name = "Okta"
+    $login.metadata.event_type = "USER_LOGIN"
+    $login.metadata.product_event_type = "user.authentication.auth_via_mfa"
+    $login.security_result.action = "BLOCK"
+    $login.security_result.category_details = "FastPass declined phishing attempt"
+    $login.target.user.userid = $userid
+
+  match:
+    $userid over 1h
+
+  outcome:
+    $targetBrowser = array_distinct($login.network.http.parsed_user_agent.browser)
+    $principalIp = array_distinct($login.principal.ip)
+    $principalIpCountry = array_distinct($login.principal.ip_geo_artifact.location.country_or_region)
+    $principalIpState = array_distinct($login.principal.ip_geo_artifact.location.state)
+    $principalIpCity = array_distinct($login.principal.location.city)
+    $principalUserEmailAddresses = array_distinct ($login.principal.user.email_addresses)
+    $securityResultSummary = array_distinct($login.security_result.summary)
+    $targetUserEmailAddresses = array_distinct($login.target.user.email_addresses)
+    $targetUserUserid = array_distinct($login.target.user.userid)
+
+  condition:
+    $login
+}

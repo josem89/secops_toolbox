@@ -1,0 +1,34 @@
+rule vt_relationships_file_executes_file {
+  meta:
+    author = "Chronicle Security"
+    description = "Alert on known File Hash executing known File Hash with VT Relationships."
+    severity = "High"
+    priority = "High"
+
+  events:
+    // event
+    $e.metadata.event_type = "PROCESS_LAUNCH"
+    $e.principal.process.file.sha256 = $p_file_hash
+    $e.target.process.file.sha256 = $t_file_hash
+    $e.principal.hostname = $hostname
+
+
+    // principal
+    $vt.graph.metadata.entity_type = "FILE"
+    $vt.graph.metadata.source_type = "GLOBAL_CONTEXT"
+    $vt.graph.metadata.vendor_name = "VirusTotal"
+    $vt.graph.metadata.product_name = "VirusTotal Relationships"
+    $vt.graph.entity.file.sha256 = $p_file_hash
+
+    // target
+    $vt.graph.relations.entity_type = "FILE"
+    $vt.graph.relations.relationship = "EXECUTES"
+    $vt.graph.relations.entity.file.sha256 = $t_file_hash
+
+  match:
+    $hostname over 5m
+
+  condition:
+    $e and $vt
+}
+

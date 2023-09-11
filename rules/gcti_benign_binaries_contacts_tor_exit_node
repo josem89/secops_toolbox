@@ -1,0 +1,49 @@
+rule gcti_benign_binaries_contacts_tor_exit_node {
+  meta:
+    author = "Chronicle Security"
+    description = "Alert on Benign Binary contacting a TOR IP."
+    severity = "High"
+    priority = "High"
+
+  events:
+    // Event
+    $e.metadata.event_type = "NETWORK_CONNECTION"
+    $e.principal.process.file.sha256 = $benign_hash
+    $e.target.ip = $ip
+
+    // Benign File search in GCTI Feed
+    $gcti_feed.graph.entity.file.sha256 = $benign_hash
+    $gcti_feed.graph.metadata.vendor_name = "Google Cloud Threat Intelligence"
+    $gcti_feed.graph.metadata.product_name = "GCTI Feed"
+    $gcti_feed.graph.metadata.entity_type = "FILE"
+    $gcti_feed.graph.metadata.threat.threat_feed_name = "Benign Binaries"
+    $gcti_feed.graph.metadata.source_type = "GLOBAL_CONTEXT"
+
+    // TOR IP search in GCTI Feed
+    $tor.graph.entity.artifact.ip = $ip
+    $tor.graph.metadata.entity_type = "IP_ADDRESS"
+    $tor.graph.metadata.threat.threat_feed_name = "Tor Exit Nodes"
+    $tor.graph.metadata.vendor_name = "Google Cloud Threat Intelligence"
+    $tor.graph.metadata.product_name = "GCTI Feed"
+
+  match:
+    $ip over 5m
+
+  outcome:
+    $risk_score = max(
+        if($tor.graph.metadata.threat.confidence = "HIGH_CONFIDENCE", 70) +
+        // Unauthorized target geographies
+        if($e.target.ip_geo_artifact.location.country_or_region = "Cuba", 20) +
+        if($e.target.ip_geo_artifact.location.country_or_region = "Iran", 20) +
+        if($e.target.ip_geo_artifact.location.country_or_region = "North Korea", 20) +
+        if($e.target.ip_geo_artifact.location.country_or_region = "Russia", 20) +
+        if($e.target.ip_geo_artifact.location.country_or_region = "Syria", 20)
+    )
+    $benign_hashes = array_distinct($benign_hash)
+    $benign_files = array_distinct($e.principal.process.file.full_path)
+    $tor_ips = array_distinct($ip)
+    $tor_ip_country = array_distinct($e.target.ip_geo_artifact.location.country_or_region)
+    
+  condition:
+    $e and $gcti_feed and $tor
+}

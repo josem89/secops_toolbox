@@ -1,0 +1,43 @@
+rule aws_successful_console_authentication_from_multiple_ips {
+
+  meta:
+    author = "Chronicle Security"
+    description = "Detects when an AWS user successfully authenticating from more than one unique IP address within 5 minutes."
+    mitre_attack_tactic = "Resource Development"
+    mitre_attack_technique = "Compromise Accounts"
+    mitre_attack_url = "https://attack.mitre.org/techniques/T1586/"
+    mitre_attack_version = "v1.2"
+    severity = "Medium"
+    priority = "Medium"
+
+  events:
+    $login.metadata.vendor_name = "AMAZON"
+    $login.metadata.product_name = "AWS CloudTrail"
+    $login.metadata.event_type = "USER_LOGIN"
+    $login.metadata.product_event_type = "ConsoleLogin"
+    $login.security_result.action = "ALLOW"
+    $login.principal.ip = $principal_ip
+    $login.target.user.userid = $user_id
+
+  match:
+    $user_id over 5m
+
+  outcome:
+    $risk_score = max(
+        // Unauthorized geographies
+        if($login.principal.ip_geo_artifact.location.country_or_region = "Cuba", 40) +
+        if($login.principal.ip_geo_artifact.location.country_or_region = "Iran", 40) +
+        if($login.principal.ip_geo_artifact.location.country_or_region = "North Korea" , 40) +
+        if($login.principal.ip_geo_artifact.location.country_or_region = "Russia", 40) +
+        if($login.principal.ip_geo_artifact.location.country_or_region = "Syria", 40)
+    )
+    $networkHttpUserAgent = array_distinct($login.network.http.user_agent)
+    $principalIp = array_distinct($login.principal.ip)
+    $principalIpCountry = array_distinct($login.principal.ip_geo_artifact.location.country_or_region)
+    $principalIpState = array_distinct($login.principal.ip_geo_artifact.location.state)
+    $targetUserUserid = array_distinct($login.target.user.userid)
+    $mfaUsed = array_distinct($login.extensions.auth.auth_details)
+
+  condition:
+    $login and #principal_ip > 1
+}

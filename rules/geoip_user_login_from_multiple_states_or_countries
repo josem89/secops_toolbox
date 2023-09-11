@@ -1,0 +1,33 @@
+rule geoip_user_login_from_multiple_states_or_countries {
+
+  meta:
+    author = "Chronicle Security"
+    description = "Detect multiple user logins from multiple states or countries using Chronicle GeoIP enrichment."
+    severity = "Low"
+    priority = "Low"
+ 
+  events:
+    $login.metadata.event_type = "USER_LOGIN"
+    $login.security_result.action = "ALLOW"
+    $login.principal.ip_geo_artifact.location.country_or_region != ""
+    
+    $login.principal.ip_geo_artifact.location.country_or_region = $country
+    $login.principal.ip_geo_artifact.location.state  = $state
+    $login.metadata.product_name = $product
+    $login.target.user.userid = $user
+ 
+  match:
+    $user,$product over 1h
+ 
+  outcome:
+    $dc_state = count_distinct($login.principal.ip_geo_artifact.location.state)
+    $array_state = array_distinct($login.principal.ip_geo_artifact.location.state)
+    $dc_country_or_region = count_distinct($login.principal.ip_geo_artifact.location.country_or_region)
+    $array_country_or_region = array_distinct($login.principal.ip_geo_artifact.location.country_or_region)
+    $array_asn = array_distinct($login.principal.ip_geo_artifact.network.asn)
+    $array_carrier_name = array_distinct($login.principal.ip_geo_artifact.network.carrier_name)
+ 
+  condition:
+    #country >= 1 and #state >= 2
+ }
+ 
