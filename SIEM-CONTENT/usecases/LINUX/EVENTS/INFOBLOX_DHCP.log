@@ -1,2 +1,0 @@
-<13> prod.dhcp Feb 1 08:38:40 prod.dhcp dhcpd[32270]: DHCPREQUEST for 10.220.10.11 from 0a:6f:30:0a:51:a1 (prod-linux) via 10.220.10.1 TransID 00000000 uid 0a:6f:30:0a:51:a1 (RENEW)
-<13> prod.dhcp Feb 1 08:38:40 prod.dhcp dhcpd[32270]: DHCPACK on 10.220.10.11 to 0a:6f:30:0a:51:a1 (prod-linux) via eth1 relay 10.220.10.1 lease-duration 86400 (RENEW) uid 0a:6f:30:0a:51:a1

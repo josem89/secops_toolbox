@@ -1,4 +1,0 @@
-<13> dhcp_server Feb 1 08:38:40 dhcp_server dhcpd[32180]: DHCPREQUEST for 10.205.11.19 from 1a:78:a0:19:51:31 (zenya-right-pc) via 10.205.11.11 TransID 00000000 uid 1a:78:a0:19:51:31 (RENEW)
-<13> dhcp_server Feb 1 08:38:40 dhcp_server dhcpd[32180]: DHCPACK on 10.205.11.19 to 1a:78:a0:19:51:31 (zenya-right-pc) via eth1 relay 10.205.11.1 lease-duration 86400 (RENEW) uid 1a:78:a0:19:51:31
-<13> dhcp_server Feb 1 08:38:40 dhcp_server dhcpd[32190]: DHCPREQUEST for 10.205.11.20 from 1a:78:d0:1a:51:32 (steve-watson-pc) via 10.205.11.11 TransID 00000000 uid 1a:78:d0:1a:51:32 (RENEW)
-<13> dhcp_server Feb 1 08:38:40 dhcp_server dhcpd[32190]: DHCPACK on 10.205.11.20 to 1a:78:d0:1a:51:32 (steve-watson-pc) via eth1 relay 10.205.11.1 lease-duration 86400 (RENEW) uid 1a:78:d0:1a:51:32
