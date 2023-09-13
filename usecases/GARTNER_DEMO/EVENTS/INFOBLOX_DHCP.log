@@ -1,2 +1,0 @@
-<13> dhcp.cymbal.it.local Mar 28 10:00:00 dhcp.cymbal.it.local dhcpd[32270]: DHCPREQUEST for 10.128.0.5 from 1a:63:fa:09:11:a2 (sftp-analytics-server) via 10.10.100.1 TransID 00000000 uid 1a:63:fa:09:11:a2 (RENEW)
-<13> dhcp.cymbal.it.local Mar 28 10:00:00 dhcp.cymbal.it.local dhcpd[32270]: DHCPACK on 10.128.0.5 to 1a:63:fa:09:11:a2 (sftp-analytics-server) via eth1 relay 10.10.100.1 lease-duration 86400 (RENEW) uid 1a:63:fa:09:11:a2
