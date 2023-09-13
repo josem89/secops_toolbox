@@ -1,4 +1,0 @@
-Mar 28 10:10:10 sftp-analytics-server sshd[1988170]: Accepted password for automation 144.64.135.153 port 29461 ssh2
-Mar 28 10:10:10 sftp-analytics-server sshd[1988170]: pam_unix_session(sshd:session): session opened for user automation by (uid=0)
-Mar 28 11:04:10 sftp-analytics-server sshd[1988177]: Accepted password for adminsftp 52.94.120.111 port 29460 ssh2
-Mar 28 11:04:10 sftp-analytics-server sshd[1988177]: pam_unix_session(sshd:session): session opened for user adminsftp by (uid=0)
