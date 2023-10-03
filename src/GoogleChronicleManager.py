@@ -14,7 +14,7 @@ import time
 import requests
 import requests.adapters
 import datetime
-from constants import CHRONICLE_API_URL
+from constants import CHRONICLE_API_URL, INGESTION_APIS, BK_APIS
 from urllib.parse import urljoin
 from random import randint
 from time import sleep
@@ -34,9 +34,8 @@ class GoogleChronicleManager(object):
 
     def __init__(self, type: str, project_id: str, private_key_id: str, private_key: str, client_email: str,
                  client_id: str, auth_uri: str, token_uri: str, auth_provider_x509_cert_url: str,
-                 client_x509_cert_url: str, api_root: str = CHRONICLE_API_URL, verify_ssl: bool = False,
-                 siemplify_logger=None, **kwargs):
-        self.siemplify_logger = siemplify_logger
+                 client_x509_cert_url: str, api_root: str = CHRONICLE_API_URL, verify_ssl: bool = False, **kwargs):
+        
         self.api_root = api_root
         self.creds = {
             "type": type,
@@ -51,7 +50,7 @@ class GoogleChronicleManager(object):
             "client_x509_cert_url": client_x509_cert_url,
             **kwargs
         }
-        if self.api_root == "https://malachiteingestion-pa.googleapis.com":
+        if self.api_root in  "https://malachiteingestion-pa.googleapis.com":
             credentials = service_account.Credentials.from_service_account_info(info=self.creds, scopes=["https://www.googleapis.com/auth/malachite-ingestion"])
         else:
             credentials = service_account.Credentials.from_service_account_info(info=self.creds, scopes=["https://www.googleapis.com/auth/chronicle-backstory"])
