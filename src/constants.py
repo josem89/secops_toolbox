@@ -2,6 +2,21 @@
 
 #CHRONICLE_ENDPOINTS=
 
+INGESTION_APIS = ["https://malachiteingestion-pa.googleapis.com",
+                  "https://europe-malachiteingestion-pa.googleapis.com",
+                  "https://europe-west2-malachiteingestion-pa.googleapis.com",
+                  "https://asia-southeast1-malachiteingestion-pa.googleapis.com",
+                  "https://me-west1-malachiteingestion-pa.googleapis.com"]
+
+
+
+BK_APIS =["https://europe-backstory.googleapis.com",
+          "https://me-west1-backstory.googleapis.com",
+          "https://europe-west2-backstory.googleapis.com",
+          "https://asia-southeast1-backstory.googleapis.com",
+          "https://australia-southeast1-backstory.googleapis.com",
+          "https://backstory.googleapis.com"]
+
 CHRONICLE_API_URL = "https://malachiteingestion-pa.googleapis.com"
 
 GIT_ENDPOINTS = {

@@ -50,10 +50,12 @@ class GoogleChronicleManager(object):
             "client_x509_cert_url": client_x509_cert_url,
             **kwargs
         }
-        if self.api_root in  "https://malachiteingestion-pa.googleapis.com":
+        if self.api_root in  INGESTION_APIS:
             credentials = service_account.Credentials.from_service_account_info(info=self.creds, scopes=["https://www.googleapis.com/auth/malachite-ingestion"])
-        else:
+        elif self.api_root in BK_APIS:
             credentials = service_account.Credentials.from_service_account_info(info=self.creds, scopes=["https://www.googleapis.com/auth/chronicle-backstory"])
+        else:
+            raise
         self.session = AuthorizedSession(credentials, auth_request=self.prepare_auth_request(verify_ssl))
         self.session.verify = verify_ssl
         self.parser = Parser
